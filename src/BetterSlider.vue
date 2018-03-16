@@ -41,14 +41,14 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: #E6454A;
     }
   }
   .better-slider-front {
-    position: absolute;
-    top: 0;
-    left: 0;
+    display: block;
     width: 100%;
+    border: 0;
+    margin: 0;
+    padding: 0;
   }
 }
 </style>
@@ -102,9 +102,13 @@ export default {
       type: Number,
       default: 300
     },
-    backgroundColor: {
+    rightBackgroundColor: {
       type: String,
-      default: '#E6454A'
+      default: 'red'
+    },
+    leftBackgroundColor: {
+      type: String,
+      default: '#ccc'
     },
     trigger: {
       type: Boolean,
@@ -128,9 +132,7 @@ export default {
       this.$emit('clickFrontEvent', { event, component: this })
     },
     close () {
-      let elStyle = this.$el.style
-      elStyle.backgroundColor = this.backgroundColor
-      elStyle.height = 0
+      this.$el.style.height = 0
 
       let wrapperStyle = this.$refs.wrapper.style
       wrapperStyle.transitionDuration = `${this.closeTime}ms`
@@ -244,18 +246,25 @@ export default {
     }
   },
   mounted () {
-    let getComputedStyle = document.defaultView && document.defaultView.getComputedStyle
-    let computedStyle = getComputedStyle(this.$refs.back, null)
-    this.backgroundColor = computedStyle.backgroundColor
-
     this.$el.style.height = Math.ceil(this.$slots.front[0].elm.offsetHeight) + 'px'
   },
   watch: {
     x () {
-      if (this.x <= this.minScrollX) this.isRightOpened = true
-      else this.isRightOpened = false
-      if (this.x >= this.maxScrollX) this.isLeftOpened = true
-      else this.isLeftOpened = false
+      console.log(this.x)
+      let elStyle = this.$el.style
+      if (this.x === 0) {
+        elStyle.backgroundColor = ''
+        this.isLeftOpened = false
+        this.isRightOpened = false
+      } else if (this.x > 0) {
+        this.isLeftOpened = true
+        this.isRightOpened = false
+        elStyle.backgroundColor = this.leftBackgroundColor
+      } else {
+        this.isLeftOpened = false
+        this.isRightOpened = true
+        elStyle.backgroundColor = this.rightBackgroundColor
+      }
     },
     trigger () {
       if (!this.isTouch) {

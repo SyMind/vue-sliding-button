@@ -1,5 +1,22 @@
 <template>
   <div class="wrapper">
+    <better-slider :right="60"
+      :left="60"
+      :trigger="trigger"
+      @touchStartEvent="touchStartEventHandle"
+      @clickFrontEvent="clickFrontEventHandle"
+      @clickBackEvent="clickBackEventHandle">
+      <div slot="front" class="front">
+        <div class="content">
+          <div class="title">这是一条消息</div>
+          <div class="description">这里是消息的内容</div>
+        </div>
+      </div>
+      <div slot="back" class="back">
+        <div class="read">已读</div>
+        <div class="delete">删除</div>
+      </div>
+    </better-slider>
     <better-slider v-for="item in items" :key="item.id"
       :right="60"
       :trigger="trigger"
@@ -88,6 +105,16 @@ body {
 .back {
   height: 60px;
   position: relative;
+  .read {
+    position: absolute;
+    left: 0;
+    width: 60px;
+    text-align: center;
+    font-size: 16px;
+    line-height: 60px;
+    color: #fff;
+    background-color: #ccc;
+  }
   .delete {
     position: absolute;
     right: 0;
