@@ -30,7 +30,7 @@
 <style lang="scss" scoped>
 .better-slider {
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
   width: 100%;
   transition: all 300ms ease-in-out;
   .better-slider-wrapper {
@@ -250,7 +250,6 @@ export default {
   },
   watch: {
     x () {
-      console.log(this.x)
       let elStyle = this.$el.style
       if (this.x === 0) {
         elStyle.backgroundColor = ''
