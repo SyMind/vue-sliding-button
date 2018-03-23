@@ -15,7 +15,7 @@ const createLintingRule = () => ({
   include: [resolve('src'), resolve('dev'), resolve('test')],
   options: {
     formatter: require('eslint-friendly-formatter'),
-    emitWarning: !config.dev.showEslintErrorsInOverlay
+    emitWarning: !config.server.showEslintErrorsInOverlay
   }
 })
 
@@ -25,11 +25,9 @@ module.exports = {
     app: './dev/src/main.js'
   },
   output: {
-    path: config.dev.assetsRoot,
+    path: config.server.assetsRoot,
     filename: '[name].js',
-    publicPath: process.env.NODE_ENV === 'production'
-      ? config.dev.assetsPublicPath
-      : config.dev.assetsPublicPath
+    publicPath: config.server.assetsPublicPath
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -40,7 +38,7 @@ module.exports = {
   },
   module: {
     rules: [
-      ...(config.dev.useEslint ? [createLintingRule()] : []),
+      ...(config.server.useEslint ? [createLintingRule()] : []),
       {
         test: /\.vue$/,
         loader: 'vue-loader',

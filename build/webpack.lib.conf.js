@@ -9,8 +9,8 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, '../dist'),
     publicPath: '/dist/',
-    filename: 'index.js',
-    library:'vue-better-slider',
+    filename: 'vue-sliding-button.js',
+    library:'vue-sliding-button',
     libraryTarget: 'umd'
   },
   module: {
