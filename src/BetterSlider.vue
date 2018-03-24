@@ -104,11 +104,11 @@ export default {
     },
     rightBackgroundColor: {
       type: String,
-      default: 'red'
+      default: '#e6454a'
     },
     leftBackgroundColor: {
       type: String,
-      default: '#ccc'
+      default: '#f1f2f6'
     },
     trigger: {
       type: Boolean,
@@ -144,7 +144,7 @@ export default {
     start (event) {
       this.isTouch = true
       this.isBackShow = true
-      this.$emit('touchStartEvent')
+      this.$emit('touchStartEvent', { event, component: this })
 
       this.duration = this.slideTime
       this.x = 0
@@ -223,7 +223,7 @@ export default {
       if (this.x === 0) this.isBackShow = false
 
       if (event.target.className.indexOf('better-slider') > -1 && this.isClosing && this.$el.offsetHeight === 0) {
-        this.$emit('deleteTransitionEndEvent', this)
+        this.$emit('closeTransitionEndEvent', { event, component: this })
       } else {
         this.resetPosition(this.bounceTime, this.ease.bounce)
       }

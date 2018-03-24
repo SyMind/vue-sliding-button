@@ -5,7 +5,8 @@
       :trigger="trigger"
       @touchStartEvent="touchStartEventHandle"
       @clickFrontEvent="clickFrontEventHandle"
-      @clickBackEvent="clickBackEventHandle">
+      @clickBackEvent="clickBackEventHandle"
+      @closeTransitionEndEvent="closeTransitionEndEventHandle">
       <div slot="front" class="front">
         <div class="content">
           <div class="title">这是一条消息</div>
@@ -55,6 +56,9 @@ export default {
       if (event.target.className.indexOf('delete') > -1) {
         component.close()
       }
+    },
+    closeTransitionEndEventHandle (e) {
+      console.log(e)
     }
   }
 }
