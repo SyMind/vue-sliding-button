@@ -76,7 +76,8 @@ module.exports = {
 
   lib: {
     // Paths
-    assetsRoot: path.resolve(__dirname, '../lib'),
+    assetsRoot: path.resolve(__dirname, '../dist'),
+    assetsSubDirectory: 'static',
 
     /**
      * Source Maps

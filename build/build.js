@@ -7,12 +7,25 @@ const path = require('path')
 const chalk = require('chalk')
 const webpack = require('webpack')
 const config = require('../config')
-const webpackConfig = require('./webpack.dev.conf')
+const devWebpackConfig = require('./webpack.dev.conf')
+const libWebpackConfig = require('./webpack.lib.conf')
 
-const spinner = ora('building for dev...')
+let webpackConfig, assetsRoot, assetsSubDirectory, spinner
+if (process.argv[2] === 'lib') {
+  webpackConfig = libWebpackConfig
+  assetsRoot = config.lib.assetsRoot
+  assetsSubDirectory = config.lib.assetsSubDirectory
+  spinner = ora('building for library...')
+} else {
+  webpackConfig = devWebpackConfig
+  assetsRoot = config.dev.assetsRoot
+  assetsSubDirectory = config.dev.assetsSubDirectory
+  spinner = ora('building for production...')
+}
+
 spinner.start()
 
-rm(path.join(config.dev.assetsRoot, config.dev.assetsSubDirectory), err => {
+rm(path.join(assetsRoot, assetsSubDirectory), err => {
   if (err) throw err
   webpack(webpackConfig, (err, stats) => {
     spinner.stop()

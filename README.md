@@ -1,6 +1,6 @@
 # vue-better-slider
 
-> 一个 Vue 的滑动按钮组件，有关滑动方面的处理借鉴 better-scroll 的实现。
+> 一个 Vue 的滑动按钮组件，拥有优雅的惯性与回弹动画，有关动画方面的处理借鉴 better-scroll 的实现。
 
 [在线例子](https://symind.github.io/vue-better-slider/index.html)
 
@@ -38,7 +38,7 @@ Vue.use(SlidingButton)
 
 # 原理
 ## 布局
-![布局](./dev/static/layout.png)
+![布局](https://symind.github.io/static/image/vue-sliding-button-layout.png)
 
 绿色部分为 wrapper，它拥有两个子元素为 back 和 front，它的高度会被 front 撑起。黄色部分为 back，它使用**绝对定位**，它的高度与 wrapper 相同，值得注意的是为了提高性能，back 在用户触摸该控件是才被插入。front 与 back 同级。
 ## 关闭

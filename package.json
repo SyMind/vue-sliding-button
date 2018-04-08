@@ -1,7 +1,7 @@
 {
   "name": "vue-sliding-button",
   "version": "1.0.2",
-  "description": "A Vue.js component implemented a sliding button.",
+  "description": "一个 Vue 的滑动按钮组件，拥有优雅的惯性与回弹动画。",
   "author": "SyMind <dacongsama@live.com>",
   "keywords": [
     "vue",
@@ -9,6 +9,13 @@
     "vue-component"
   ],
   "main": "dist/vue-sliding-button.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SyMind/vue-sliding-button.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SyMind/vue-sliding-button/issues"
+  },
   "scripts": {
     "server": "webpack-dev-server --inline --progress --config build/webpack.server.conf.js",
     "start": "npm run dev",
@@ -16,8 +23,8 @@
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
-    "build:dev": "node build/dev.js",
-    "build:lib": "node build/lib.js"
+    "build:dev": "node build/build.js",
+    "build:lib": "node build/build.js lib"
   },
   "devDependencies": {
     "vue": "^2.5.16",
