@@ -1,11 +1,12 @@
 <template>
   <div class="better-slider"
-    style="transition-property: height; transition-timing-function: 'ease-in;"
+    style="transition-property: height; transition-timing-function: ease-in;"
     :style="{ 'transition-duration': `${closeTime}ms` }"
     @transitionEnd="transitionEnd"
     @webkitTransitionEnd="transitionEnd"
     @oTransitionEnd="transitionEnd"
-    @MSTransitionEnd="transitionEnd">
+    @MSTransitionEnd="transitionEnd"
+  >
     <div class="better-slider-wrapper"
       style="transition-property: transform; transition-timing-function: ease-in-out;"
       ref="wrapper">
@@ -14,13 +15,22 @@
       </div>
       <div class="better-slider-front" ref="front"
         style="transition-property: transform;"
-        :style="{ 'transition-timing-function': easing,
+        :style="{
+          'transition-timing-function': easing,
           'transition-duration': `${duration}ms`,
-          'transform': `translate(${x}px, 0px) translateZ(0px)` }"
+          'transform': `translate(${x}px, 0px) translateZ(0px)`
+        }"
         @touchstart="start"
+        @mousedown="start"
         @touchmove="move"
+        @mousemove="move"
         @touchend="end"
-        @click="clickFrontEventHandle">
+        @mouseup="end"
+        @touchcancel="end"
+        @mousecancel="end"
+        @mouseleave="end"
+        @click="clickFrontEventHandle"
+      >
         <slot name="front"></slot>
       </div>
     </div>
@@ -54,7 +64,15 @@
 </style>
 
 <script>
-import { getNow, computeMomentum } from './util'
+import {
+  eventType,
+  TOUCH_EVENT
+} from './util/dom'
+import {
+  getNow,
+  computeMomentum
+} from './util/lang'
+
 export default {
   name: 'better-slider',
   props: {
@@ -100,7 +118,7 @@ export default {
     },
     closeTime: {
       type: Number,
-      default: 300
+      default: 500
     },
     rightBackgroundColor: {
       type: String,
@@ -108,7 +126,7 @@ export default {
     },
     leftBackgroundColor: {
       type: String,
-      default: '#f1f2f6'
+      default: '#ccc'
     },
     trigger: {
       type: Boolean,
@@ -142,7 +160,18 @@ export default {
       this.isClosing = true
     },
     start (event) {
-      this.isTouch = true
+      const _eventType = eventType[event.type]
+      if (_eventType !== TOUCH_EVENT) {
+        if (event.button !== 0) {
+          return
+        }
+      }
+
+      if (this.initiated && this.initiated !== _eventType) {
+        return
+      }
+      this.initiated = _eventType
+
       this.isBackShow = true
       this.$emit('touchStartEvent', { event, component: this })
 
@@ -152,20 +181,23 @@ export default {
       this.distX = 0
       this.startTime = getNow()
 
-      let touch = event.touches[0]
+      const touch = event.touches ? event.touches[0] : event
       this.startX = this.x
       this.absStartX = this.x
       this.touchX = touch.pageX
     },
     move (event) {
-      this.duration = 0
+      if (eventType[event.type] !== this.initiated) {
+        return
+      }
 
-      let touch = event.touches[0]
-      let deltaX = touch.pageX - this.touchX
+      this.duration = 0
+      const touch = event.touches ? event.touches[0] : event
+      const deltaX = touch.pageX - this.touchX
       this.touchX = touch.pageX
       this.distX += deltaX
-      let absDistX = Math.abs(this.distX)
-      let timestamp = getNow()
+      const absDistX = Math.abs(this.distX)
+      const timestamp = getNow()
 
       if (timestamp - this.endTime > this.momentumLimitTime && absDistX < this.momentumLimitDistance) {
         return
@@ -192,11 +224,14 @@ export default {
       }
     },
     end (event) {
-      this.isTouch = false
+      if (eventType[event.type] !== this.initiated) {
+        return
+      }
+      this.initiated = false
 
       this.endTime = getNow()
-      let duration = this.endTime - this.startTime
-      let absDistX = Math.abs(this.x - this.startX)
+      const duration = this.endTime - this.startTime
+      const absDistX = Math.abs(this.x - this.startX)
 
       if (this.momentum && duration < this.momentumLimitTime && absDistX > this.momentumLimitDistance) {
         let momentumX = computeMomentum(this.x, this.startX, duration, this.minScrollX, this.maxScrollX, this.$el.offsetWidth, this.momentumTime, this.deceleration)
@@ -246,7 +281,7 @@ export default {
     }
   },
   mounted () {
-    this.$el.style.height = Math.ceil(this.$slots.front[0].elm.offsetHeight) + 'px'
+    this.$el.style.height = `${Math.ceil(this.$slots.front[0].elm.offsetHeight)}px`
   },
   watch: {
     x () {
@@ -266,7 +301,7 @@ export default {
       }
     },
     trigger () {
-      if (!this.isTouch) {
+      if (!this.initiated) {
         this.duration = this.slideTime
         this.x = 0
       }

@@ -10,7 +10,7 @@
       <div slot="front" class="front">
         <div class="content">
           <div class="title">这是一条消息</div>
-          <div class="description">这里是消息的内容</div>
+          <div class="description">左边“已读”，右边“删除”</div>
         </div>
       </div>
       <div slot="back" class="back">
