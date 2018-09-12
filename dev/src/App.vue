@@ -36,7 +36,7 @@
         <div class="delete">删除</div>
       </div>
     </better-slider>
-    <!-- <better-slider v-for="item in items" :key="item.id"
+    <better-slider v-for="item in items" :key="item.id"
       :right="60"
       :trigger="trigger"
       @touchStartEvent="touchStartEventHandle"
@@ -44,14 +44,14 @@
       @clickBackEvent="clickBackEventHandle">
       <div slot="front" class="front">
         <div class="content">
-          <div class="title">{{ item.id }}的标题</div>
-          <div class="description">{{ item.id }}的描述信息</div>
+          <div class="title">第 {{ item.id }} 个消息</div>
+          <div class="description">左滑出现删除按钮</div>
         </div>
       </div>
       <div slot="back" class="back">
         <div class="delete">删除</div>
       </div>
-    </better-slider> -->
+    </better-slider>
   </div>
 </template>
 
