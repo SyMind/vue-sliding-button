@@ -23,7 +23,8 @@ const webpackConfig = merge(baseWebpackConfig, {
   output: {
     path: config.dev.assetsRoot,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
-    chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
+    chunkFilename: utils.assetsPath('js/[id].[chunkhash].js'),
+    publicPath: config.dev.assetsPublicPath
   },
   plugins: [
     new UglifyJsPlugin({
