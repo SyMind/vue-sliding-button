@@ -48,6 +48,7 @@
   width: 100%;
   transition: all 300ms ease-in-out;
   .better-slider-wrapper {
+    overflow: hidden;
     height: 100%;
     .better-slider-back {
       position: absolute;
@@ -78,18 +79,19 @@ import {
 } from './util/dom'
 import {
   getNow,
-  computeMomentum
+  computeMomentum,
+  parsePercentage
 } from './util/lang'
 
 export default {
   name: 'better-slider',
   props: {
     right: {
-      type: Number,
+      type: [ Number, String ],
       default: 80
     },
     left: {
-      type: Number,
+      type: [ Number, String ],
       default: 0
     },
     deceleration: {
@@ -261,23 +263,45 @@ export default {
       }
     },
     transitionEnd (event) {
-      if (event.target.className.indexOf('better-slider') > -1 && this.isClosing && this.$el.offsetHeight === 0) {
+      if (event.target.className.indexOf('better-slider') > -1 &&
+        this.isClosing &&
+        this.$el.offsetHeight === 0
+      ) {
         this.$emit('closeTransitionEndEvent', { event, component: this })
       } else {
+        if (this.isRightOpened && this.x === this.minScrollX) {
+          this.$emit('rightOpenedEvent', { event, component: this })
+        }
+        if (this.isLeftOpened && this.x === this.maxScrollX) {
+          this.$emit('leftOpenedEvent', { event, component: this })
+        }
         this.resetPosition(this.bounceTime, this.ease.bounce)
       }
     },
     resetPosition (time, easing) {
-      if (this.isRightOpened) this.x = this.minScrollX
-      else if (this.isLeftOpened) this.x = this.maxScrollX
-      else this.x = 0
+      if (this.isRightOpened) {
+        this.x = this.minScrollX
+      } else if (this.isLeftOpened) {
+        this.x = this.maxScrollX
+      } else {
+        this.x = 0
+      }
       this.duration = time
       this.easing = easing
+    },
+    computeX (input) {
+      if (typeof input === 'string') {
+        const percentage = parsePercentage(input)
+        const wrapperWidth = parseInt(window.getComputedStyle(this.$refs.wrapper, null).width)
+        if (typeof percentage === 'number') {
+          return Math.ceil(percentage * wrapperWidth)
+        }
+        return 0
+      }
+      return input
     }
   },
   created () {
-    this.minScrollX = -this.right
-    this.maxScrollX = this.left
     this.isClosing = false
     this.ease = {
       slide: 'ease-in',
@@ -285,6 +309,8 @@ export default {
     }
   },
   mounted () {
+    this.minScrollX = -this.computeX(this.right)
+    this.maxScrollX = this.computeX(this.left)
     this.$el.style.height = `${Math.ceil(this.$slots.front[0].elm.offsetHeight)}px`
   },
   watch: {

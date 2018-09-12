@@ -6,7 +6,7 @@
       @touchStartEvent="touchStartEventHandle"
       @clickFrontEvent="clickFrontEventHandle"
       @clickBackEvent="clickBackEventHandle"
-      @closeTransitionEndEvent="closeTransitionEndEventHandle">
+    >
       <div slot="front" class="front">
         <div class="content">
           <div class="title">这是一条消息</div>
@@ -18,7 +18,25 @@
         <div class="delete">删除</div>
       </div>
     </better-slider>
-    <better-slider v-for="item in items" :key="item.id"
+    <better-slider
+      :right="'100%'"
+      :trigger="trigger"
+      @touchStartEvent="touchStartEventHandle"
+      @clickFrontEvent="clickFrontEventHandle"
+      @clickBackEvent="clickBackEventHandle"
+      @rightOpenedEvent="rightOpenedEventHandle"
+    >
+      <div slot="front" class="front">
+        <div class="content">
+          <div class="title">这是一条消息</div>
+          <div class="description">向左滑动删除消息</div>
+        </div>
+      </div>
+      <div slot="back" class="back">
+        <div class="delete">删除</div>
+      </div>
+    </better-slider>
+    <!-- <better-slider v-for="item in items" :key="item.id"
       :right="60"
       :trigger="trigger"
       @touchStartEvent="touchStartEventHandle"
@@ -33,7 +51,7 @@
       <div slot="back" class="back">
         <div class="delete">删除</div>
       </div>
-    </better-slider>
+    </better-slider> -->
   </div>
 </template>
 
@@ -57,8 +75,8 @@ export default {
         component.close()
       }
     },
-    closeTransitionEndEventHandle (e) {
-      console.log(e)
+    rightOpenedEventHandle ({ event, component }) {
+      component.close()
     }
   }
 }

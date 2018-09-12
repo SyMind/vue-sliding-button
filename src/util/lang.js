@@ -21,3 +21,15 @@ export function computeMomentum (current, start, time, minScrollX, maxScrollX, w
     duration
   }
 }
+
+const PERCENTAGE_REGEX = /^(\d+\.?\d*)|(\d*\.\d+)[%]$/g
+
+export function parsePercentage (input) {
+  if (typeof input !== 'string') {
+    return
+  }
+  const match = PERCENTAGE_REGEX.exec(input)
+  const value = match && match[0]
+  const number = parseInt(value)
+  return isNaN(number) ? undefined : number * 0.01
+}
