@@ -4,6 +4,8 @@
 
 [在线例子](https://symind.github.io/vue-better-slider/index.html)
 
+![二维码](https://symind.github.io/static/image/vue-sliding-button-qr-code.png)
+
 # 起步
 ## 安装
 ``` bash

@@ -17,8 +17,7 @@
     "url": "https://github.com/SyMind/vue-sliding-button/issues"
   },
   "scripts": {
-    "server": "webpack-dev-server --inline --progress --config build/webpack.server.conf.js",
-    "start": "npm run dev",
+    "start": "webpack-dev-server --inline --progress --config build/webpack.server.conf.js",
     "unit": "jest --config test/unit/jest.conf.js --coverage",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",

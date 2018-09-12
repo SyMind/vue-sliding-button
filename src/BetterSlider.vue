@@ -10,9 +10,6 @@
     <div class="better-slider-wrapper"
       style="transition-property: transform; transition-timing-function: ease-in-out;"
       ref="wrapper">
-      <div v-show="isBackShow" class="better-slider-back" @click="clickBackEventHandle" ref="back">
-        <slot name="back"></slot>
-      </div>
       <div class="better-slider-front" ref="front"
         style="transition-property: transform;"
         :style="{
@@ -32,6 +29,13 @@
         @click="clickFrontEventHandle"
       >
         <slot name="front"></slot>
+      </div>
+      <div
+        class="better-slider-back"
+        @click="clickBackEventHandle"
+        ref="back"
+      >
+        <slot name="back"></slot>
       </div>
     </div>
   </div>
@@ -54,11 +58,15 @@
     }
   }
   .better-slider-front {
+    position: absolute;
+    top: 0;
+    left: 0;
     display: block;
     width: 100%;
     border: 0;
     margin: 0;
     padding: 0;
+    z-index: 10;
   }
 }
 </style>
@@ -118,7 +126,7 @@ export default {
     },
     closeTime: {
       type: Number,
-      default: 500
+      default: 300
     },
     rightBackgroundColor: {
       type: String,
@@ -138,8 +146,7 @@ export default {
       x: 0,
       wrapperX: 0,
       duration: 0,
-      easing: {},
-      isBackShow: false
+      easing: {}
     }
   },
   methods: {
@@ -172,7 +179,6 @@ export default {
       }
       this.initiated = _eventType
 
-      this.isBackShow = true
       this.$emit('touchStartEvent', { event, component: this })
 
       this.duration = this.slideTime
@@ -255,8 +261,6 @@ export default {
       }
     },
     transitionEnd (event) {
-      if (this.x === 0) this.isBackShow = false
-
       if (event.target.className.indexOf('better-slider') > -1 && this.isClosing && this.$el.offsetHeight === 0) {
         this.$emit('closeTransitionEndEvent', { event, component: this })
       } else {
