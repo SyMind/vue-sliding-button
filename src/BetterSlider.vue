@@ -1,22 +1,23 @@
 <template>
-  <div class="better-slider"
-    style="transition-property: height; transition-timing-function: ease-in;"
-    :style="{ 'transition-duration': `${closeTime}ms` }"
+  <div
+    class="better-slider"
+    style="transition-property:height;transition-timing-function:ease-in;"
+    :style="sliderStyle"
     @transitionEnd="transitionEnd"
     @webkitTransitionEnd="transitionEnd"
     @oTransitionEnd="transitionEnd"
     @MSTransitionEnd="transitionEnd"
   >
-    <div class="better-slider-wrapper"
-      style="transition-property: transform; transition-timing-function: ease-in-out;"
-      ref="wrapper">
-      <div class="better-slider-front" ref="front"
-        style="transition-property: transform;"
-        :style="{
-          'transition-timing-function': easing,
-          'transition-duration': `${duration}ms`,
-          'transform': `translate(${x}px, 0px) translateZ(0px)`
-        }"
+    <div
+      class="better-slider-wrapper"
+      style="transition-property:transform;transition-timing-function:ease-in-out;"
+      ref="wrapper"
+    >
+      <div
+        class="better-slider-front"
+        ref="front"
+        style="transition-property:transform;"
+        :style="frontStyle"
         @touchstart="start"
         @mousedown="start"
         @touchmove="move"
@@ -299,6 +300,18 @@ export default {
         return 0
       }
       return input
+    }
+  },
+  computed: {
+    sliderStyle () {
+      return { 'transition-duration': `${this.duration}ms` }
+    },
+    frontStyle () {
+      return {
+        'transition-timing-function': this.easing,
+        'transition-duration': `${this.duration}ms`,
+        'transform': `translate(${this.x}px, 0px) translateZ(0px)`
+      }
     }
   },
   created () {
