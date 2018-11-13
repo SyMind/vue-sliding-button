@@ -1,6 +1,6 @@
 {
   "name": "vue-sliding-button",
-  "version": "1.0.2",
+  "version": "1.0.6",
   "description": "一个 Vue 的滑动按钮组件，拥有优雅的惯性与回弹动画。",
   "author": "SyMind <dacongsama@live.com>",
   "keywords": [
